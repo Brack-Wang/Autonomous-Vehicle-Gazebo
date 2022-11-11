@@ -1,35 +1,35 @@
 # Gazebo Simulator of CS 588
 ---
 
-# Simulator Command cheet sheet
-1. Compile
+# Simulator Command cheat sheet
+1. **Compile**
 source devel/setup.bash  
 catkin build (catkin_make)
 
-2. Open Gazebo
+2. **Open Gazebo**
 source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="track1.world"  
 
-3. Show odometers on Rviz
+3. **Show odometers on Rviz**
 source devel/setup.bash  
 roslaunch gem_launch gem_sensor_info.launch 
 
-4. Move with pure pursuit
+4. **Move with pure pursuit**
 source devel/setup.bash  
 rosrun gem_pure_pursuit_sim pure_pursuit_sim.py  
 
-5. Move with stanley_sim
+5. **Move with stanley_sim**
 source devel/setup.bash  
 rosrun gem_stanley_sim stanley_sim.py  
 
-6. Camera Vision 
+6. **Camera Vision**
 source devel/setup.bash 
 rosrun camera_vision camera_vision.py
 
 ---
 # Installation
-To succeed run the simulator, you should:
-1. Install yolov3.weight for object detection
+## To succeed run the simulator, you should:
+1. **Install yolov3.weight for object detection**
 - install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
 - Put the weight file in ./src/gem_vision/camera_vision/scripts/Detector/
 
