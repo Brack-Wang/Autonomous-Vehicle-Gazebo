@@ -3,9 +3,10 @@
 
 # Simulator Command cheat sheet
 1. **Compile**
+```
 source devel/setup.bash  
 catkin build (catkin_make)
-
+```
 2. **Open Gazebo**
 source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="track1.world"  
@@ -56,9 +57,7 @@ rosrun camera_vision camera_vision.py
 
 	- INPUT: Camera/Lidar
 
-	- OUTPUT: 4 world coordinates of obstacle  [Rectangular]
-
-		  8 world coordinates of obstacle  [Cube]
+	- OUTPUT: 4 world coordinates of obstacle  [Rectangular]  / 8 world coordinates of obstacle  [Cube]
 		  
 
 ## MOTION PLANNING
