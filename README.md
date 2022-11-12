@@ -82,3 +82,16 @@ rosrun camera_vision camera_vision.py
 ## CONTROL 
 
 -MPC
+
+
+# Useful Link
+- Original Code of simulator
+https://github.com/hangcui1201/POLARIS_GEM_e2_Simulator
+
+- Original Code of  Real Car
+https://github.com/hangcui1201/POLARIS_GEM_e2_Real
+
+- Handbook
+http://www.autolabor.com.cn/book/ROSTutorials/
+
+
