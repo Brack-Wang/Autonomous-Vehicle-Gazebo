@@ -10,19 +10,28 @@ catkin build (catkin_make)
 2. **Open Gazebo**
 ```
 source devel/setup.bash  
+
+# Four gazebo wold
+# World which has pedestrain model for object detection
+roslaunch gem_launch gem_init.launch world_name:="mp0.world"  
+# World with waypoints which could use pure pursuit/stanley_sim directly
 roslaunch gem_launch gem_init.launch world_name:="track1.world"  
+roslaunch gem_launch gem_init.launch world_name:="track2.world" 
+# World for real Car
+roslaunch gem_launch gem_init.launch world_name:="highbay_track.world"  
+
 ```
 3. **Show odometers on Rviz**
 ```
 source devel/setup.bash  
 roslaunch gem_launch gem_sensor_info.launch 
 ```
-4. **Move with pure pursuit**
+4. **Move with pure pursuit for track1.world**
 ```
 source devel/setup.bash  
 rosrun gem_pure_pursuit_sim pure_pursuit_sim.py  
 ```
-5. **Move with stanley_sim**
+5. **Move with stanley_sim for track1.world**
 ```
 source devel/setup.bash  
 rosrun gem_stanley_sim stanley_sim.py  
@@ -86,12 +95,51 @@ rosrun camera_vision camera_vision.py
 
 # Useful Link
 - Original Code of simulator
+
 https://github.com/hangcui1201/POLARIS_GEM_e2_Simulator
 
 - Original Code of  Real Car
+
 https://github.com/hangcui1201/POLARIS_GEM_e2_Real
 
 - Handbook
+
 http://www.autolabor.com.cn/book/ROSTutorials/
 
+
+# Others
+#### Track1 Environment
+
+$ source devel/setup.bash  
+$ roslaunch gem_launch gem_init.launch world_name:="track1.world"  
+
+$ source devel/setup.bash  
+$ roslaunch gem_launch gem_sensor_info.launch  
+
+
+##### Demo of Pure Pursuit Controller
+
+$ source devel/setup.bash  
+$ rosrun gem_pure_pursuit_sim pure_pursuit_sim.py  
+
+
+##### Demo of Stanley Controller
+
+$ source devel/setup.bash  
+$ rosrun gem_stanley_sim stanley_sim.py  
+
+### Track2 Environment
+
+$ source devel/setup.bash  
+$ roslaunch gem_launch gem_init.launch world_name:="track2.world" y:=-98.5  
+
+### Example Environment
+
+$ source devel/setup.bash  
+$ roslaunch gem_launch gem_init.launch  
+
+### Highbay Environment
+
+$ source devel/setup.bash  
+$ roslaunch gem_launch gem_init.launch world_name:="highbay_track.world" x:=-1.5 y:=-21 yaw:=3.1416  
 

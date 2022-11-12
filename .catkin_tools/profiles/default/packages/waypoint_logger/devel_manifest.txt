@@ -1,0 +1,5 @@
+ros_drivers/waypoint_logger
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/waypoint_logger/cmake.lock /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/./cmake.lock
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/waypoint_logger/share/waypoint_logger/cmake/waypoint_loggerConfig.cmake /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/share/waypoint_logger/cmake/waypoint_loggerConfig.cmake
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/waypoint_logger/share/waypoint_logger/cmake/waypoint_loggerConfig-version.cmake /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/share/waypoint_logger/cmake/waypoint_loggerConfig-version.cmake
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/waypoint_logger/lib/pkgconfig/waypoint_logger.pc /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/lib/pkgconfig/waypoint_logger.pc

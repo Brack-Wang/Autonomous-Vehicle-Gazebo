@@ -1,0 +1,7 @@
+gem_vision/camera_vision
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/cmake.lock /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/./cmake.lock
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/share/camera_vision/cmake/camera_visionConfig.cmake /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/share/camera_vision/cmake/camera_visionConfig.cmake
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/share/camera_vision/cmake/camera_visionConfig-version.cmake /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/share/camera_vision/cmake/camera_visionConfig-version.cmake
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/lib/camera_vision/cmake.lock /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/lib/camera_vision/cmake.lock
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/lib/camera_vision/camera_vision.py /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/lib/camera_vision/camera_vision.py
+/home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/.private/camera_vision/lib/pkgconfig/camera_vision.pc /home/feiran/Desktop/Autonomous-Vehicle-Gazebo-CS588/devel/lib/pkgconfig/camera_vision.pc
