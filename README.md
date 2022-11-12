@@ -3,9 +3,10 @@
 # Installation
 ## To succeed run the simulator, you should:
 1. mkdir Simulator
-2. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
-3. Change name of folder "Autonomous-Vehicle-Gazebo-CS588" to "src"
-4. Install yolov3.weight for object detection
+2. cd Simulator
+3. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
+4. Change name of folder "Autonomous-Vehicle-Gazebo-CS588" to "src"
+5. Install yolov3.weight for object detection
 	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
 	- Put the weight file in ./src/gem_vision/camera_vision/scripts/Detector/
 
