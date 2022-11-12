@@ -1,6 +1,14 @@
 # Gazebo Simulator of CS 588
 ---
+# Installation
+## To succeed run the simulator, you should:
+1. mkdir Simulator
+2. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
+3. Install yolov3.weight for object detection
+	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
+	- Put the weight file in ./src/gem_vision/camera_vision/scripts/Detector/
 
+---
 # Simulator Command cheat sheet
 1. **Compile**
 ```
@@ -41,13 +49,6 @@ rosrun gem_stanley_sim stanley_sim.py
 source devel/setup.bash 
 rosrun camera_vision camera_vision.py
 ```
-
----
-# Installation
-## To succeed run the simulator, you should:
-1. **Install yolov3.weight for object detection**
-- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
-- Put the weight file in ./src/gem_vision/camera_vision/scripts/Detector/
 
 ---
 
