@@ -18,6 +18,7 @@ from cv_bridge import CvBridge, CvBridgeError
 import message_filters
 sys.path.append("./src/gem_vision/camera_vision/scripts/Detector/")
 from yolo_detect_image import yolo_detect_image
+from camera_vision.msg import Boudingbox
 
 class ImageConverter:
     
@@ -34,9 +35,9 @@ class ImageConverter:
         subcriber_left_depth = message_filters.Subscriber('/stereo/camera/left/image_raw', Image)
         subcriber_right_depth = message_filters.Subscriber('/stereo/camera/left/image_raw', Image)
 
-        sync = message_filters.ApproximateTimeSynchronizer([subcriber_rgb, subcriber_left_depth, subcriber_right_depth], 10, 1)#同步时间戳，具体参数含义需要查看官方文档。
-        sync.registerCallback(self.multi_callback)#执行反馈函数
-        self.image_pub = rospy.Publisher("/front_single_camera/image_processed", Image, queue_size=1)
+        sync = message_filters.ApproximateTimeSynchronizer([subcriber_rgb, subcriber_left_depth, subcriber_right_depth], 10, 1)
+        sync.registerCallback(self.multi_callback)
+        self.image_pub = rospy.Publisher("/front_single_camera/object_detection", Boudingbox, queue_size=1)
 
     def multi_callback(self, rgb, left_depth, right_depth):
         # Get rgb and depth image in cv2 format respectively
@@ -64,14 +65,18 @@ class ImageConverter:
         # cv2.destroyAllWindows()
         detected_list = yolo_detect_image(image_frame)
         print("Detected Objects", detected_list)
+        bbx = Boudingbox()
+        bbx.center_x = 0.3
+        bbx.center_y = 10.4
+        bbx.width = 11.1
+        bbx.height = 12.3
+        bbx.classId = 3
+
         # print(cv2.__version__)
         
     
         # ----------------------------------------------------------------------
-        try:
-            self.image_pub.publish(self.bridge.cv2_to_imgmsg(pub_image, "bgr8"))
-        except CvBridgeError as e:
-            rospy.logerr("CvBridge Error: {0}".format(e))
+        self.image_pub.publish(bbx)
 
     def cleanup(self):
         print ("Shutting down vision node.")
