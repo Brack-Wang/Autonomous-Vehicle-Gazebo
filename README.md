@@ -56,11 +56,28 @@ rosrun gem_stanley_sim stanley_sim.py
 source devel/setup.bash 
 rosrun camera_vision camera_det.py
 ```
+---
+# Keys
+## Pedestrian Detection
+returns a ros msgs named as "Boudingbox" 
+```from camera_vision.msg import Boudingbox```; 
+```
+Boundingbox_msg: 
 
+float32[] center_x	 #center of Bouding box
+float32[] center_y
+float32[] width	     # width of Bounding box
+float32[] height 	 # height of Bouding box
+float32[] distance	 # distance to object
+float32[] confidence # confidence of detecting an object
+int32[] classId	     # clssId = 0 means pedestrain
+```
+
+If you don't want to see visulization, decomment the usage of ```draw_prediction``` in utils.py
 ---
 
 # Target
-## FUNCTION
+#### FUNCTION
 
 - (BASIC 1) 沿着车道行驶
 
@@ -69,7 +86,7 @@ rosrun camera_vision camera_det.py
 - (ADVANCE) 检测到车道前方的静止物体，绕道
 
 
-## PERCEPTION
+#### PERCEPTION
 - 车道线检测（转弯）
 
 	- INPUT: Camera 
@@ -83,7 +100,7 @@ rosrun camera_vision camera_det.py
 	- OUTPUT: 4 world coordinates of obstacle  [Rectangular]  / 8 world coordinates of obstacle  [Cube]
 		  
 
-## MOTION PLANNING
+#### MOTION PLANNING
 - 车道保持
 
 	- INPUT: road_path
@@ -96,12 +113,14 @@ rosrun camera_vision camera_det.py
 
 	- OUTPUT: trajectory to CONTROL
 	
-## CONTROL 
+#### CONTROL 
 
--MPC
+- MPC
 
 
-# Useful Link
+
+# Others
+## Useful Link
 - Original Code of simulator
 
 https://github.com/hangcui1201/POLARIS_GEM_e2_Simulator
@@ -114,8 +133,7 @@ https://github.com/hangcui1201/POLARIS_GEM_e2_Real
 
 http://www.autolabor.com.cn/book/ROSTutorials/
 
-
-# Others
+## Cammands
 #### Track1 Environment
 
 $ source devel/setup.bash  
