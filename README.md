@@ -4,11 +4,12 @@
 ## To succeed run the simulator, you should:
 1. mkdir Simulator
 2. cd Simulator
-3. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
-4. Change name of folder "Autonomous-Vehicle-Gazebo-CS588" to "src"
-5. Install yolov3.weight for object detection
+3. mkdir ./Store
+4. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
+5. Change name of folder "Autonomous-Vehicle-Gazebo-CS588" to "src"
+6. Install yolov3.weight for object detection
 	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
-	- Put the weight file in ./src/gem_vision/camera_vision/scripts/Detector/
+	- Put the weight file in ./Store
 
 ---
 # Simulator Command cheat sheet
@@ -20,17 +21,17 @@ catkin build (catkin_make)
 2. **Open Gazebo**
 ```
 source devel/setup.bash  
-
-# Four gazebo wold
-# World which has pedestrain model for object detection
+```
+# 4 gazebo wold
+**World which has pedestrain model for object detection**
 roslaunch gem_launch gem_init.launch world_name:="mp0.world"  
-# World with waypoints which could use pure pursuit/stanley_sim directly
-roslaunch gem_launch gem_init.launch world_name:="track1.world"  
+**World with waypoints which could use pure pursuit/stanley_sim directly**
+roslaunch gem_launch gem_init.launch world_name:="track1.world" 
+**World without waypoints** 
 roslaunch gem_launch gem_init.launch world_name:="track2.world" 
-# World for real Car
+**World for real Car**
 roslaunch gem_launch gem_init.launch world_name:="highbay_track.world"  
 
-```
 3. **Show odometers on Rviz**
 ```
 source devel/setup.bash  
@@ -46,10 +47,10 @@ rosrun gem_pure_pursuit_sim pure_pursuit_sim.py
 source devel/setup.bash  
 rosrun gem_stanley_sim stanley_sim.py  
 ```
-6. **Camera Vision**
+6. **Pedestrin Detecion**
 ```
 source devel/setup.bash 
-rosrun camera_vision camera_vision.py
+rosrun camera_vision camera_det.py
 ```
 
 ---
