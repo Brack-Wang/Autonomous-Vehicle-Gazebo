@@ -1,4 +1,4 @@
-# Gazebo Simulator of CS 588
+# Gazebo Simulator 
 ---
 # Installation
 ## To succeed run the simulator, you should:
@@ -6,7 +6,7 @@
 2. cd Simulator
 3. mkdir ./Store
 4. git clone https://github.com/Brack-Wang/Autonomous-Vehicle-Gazebo-CS588.git
-5. Change name of folder "Autonomous-Vehicle-Gazebo-CS588" to "src"
+5. Change name of folder "Autonomous-Vehicle-Gazebo" to "src"
 6. Install yolov3.weight for object detection
 	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
 	- Put the weight file in ./Store
