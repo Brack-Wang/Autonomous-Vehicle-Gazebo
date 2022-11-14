@@ -74,6 +74,7 @@ int32[] classId	     # clssId = 0 means pedestrain
 ```
 
 If you don't want to see visulization, decomment the usage of ```draw_prediction``` in utils.py
+
 ---
 
 # Target
