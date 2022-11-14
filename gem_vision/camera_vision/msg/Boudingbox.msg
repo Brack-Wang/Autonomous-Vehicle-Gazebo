@@ -1,5 +1,7 @@
-float32 center_x
-float32 center_y
-float32 width
-float32 height
-int32 classId
+float32[] center_x
+float32[] center_y
+float32[] width
+float32[] height
+float32[] distance
+float32[] confidence
+int32[] classId
