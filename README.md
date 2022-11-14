@@ -21,16 +21,20 @@ catkin build (catkin_make)
 2. **Open Gazebo**
 ```
 source devel/setup.bash  
-```
+
 # 4 gazebo wold
-**World which has pedestrain model for object detection**
+1) World which has pedestrain model for object detection
 roslaunch gem_launch gem_init.launch world_name:="mp0.world"  
-**World with waypoints which could use pure pursuit/stanley_sim directly**
+
+2) World with waypoints which could use pure pursuit/stanley_sim directly
 roslaunch gem_launch gem_init.launch world_name:="track1.world" 
-**World without waypoints** 
+
+3) World without waypoints
 roslaunch gem_launch gem_init.launch world_name:="track2.world" 
-**World for real Car**
+
+4) World for real Car
 roslaunch gem_launch gem_init.launch world_name:="highbay_track.world"  
+```
 
 3. **Show odometers on Rviz**
 ```
