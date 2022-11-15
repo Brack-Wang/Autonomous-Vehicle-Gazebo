@@ -16,7 +16,8 @@
 1. **Compile**
 ```
 source devel/setup.bash  
-catkin build (catkin_make)
+catkin build 
+# or you could use catkin_make to compile
 ```
 2. **Open Gazebo**
 ```
@@ -33,7 +34,7 @@ roslaunch gem_launch gem_init.launch world_name:="track1.world"
 roslaunch gem_launch gem_init.launch world_name:="track2.world" 
 
 4) World for real Car
-roslaunch gem_launch gem_init.launch world_name:="highbay_track.world"  
+roslaunch gem_launch gem_init.launch world_name:="highbay_track.world" x:=-1.5 y:=-21 yaw:=3.1416  
 ```
 
 3. **Show odometers on Rviz**
@@ -51,16 +52,17 @@ rosrun gem_pure_pursuit_sim pure_pursuit_sim.py
 source devel/setup.bash  
 rosrun gem_stanley_sim stanley_sim.py  
 ```
-6. **Pedestrin Detecion**
+6. **Camera Detecion**
 ```
 source devel/setup.bash 
 rosrun camera_vision camera_det.py
 ```
 ---
 # Keys
-## Pedestrian Detection
-returns a ros msgs named as "Boudingbox" 
-```from camera_vision.msg import Boudingbox```; 
+## Camera Detection
+which detect pedestrain and lanes, return bounding box information of detected objects and the middle line of lanes
+returns a ros msgs named as "DetectBox" 
+```from camera_vision.msg import DetectBox```; 
 ```
 Boundingbox_msg: 
 
@@ -71,9 +73,9 @@ float32[] height 	 # height of Bouding box
 float32[] distance	 # distance to object
 float32[] confidence # confidence of detecting an object
 int32[] classId	     # clssId = 0 means pedestrain
+float32[] middle_lane # positions of start and end of the middle line of lanes [start_x, start_y, end_x, end_y]
 ```
 
-If you don't want to see visulization, decomment the usage of ```draw_prediction``` in utils.py
 
 ---
 
