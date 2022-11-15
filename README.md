@@ -59,6 +59,11 @@ rosrun gem_stanley_sim stanley_sim.py
 ```
 source devel/setup.bash 
 rosrun camera_vision camera_det.py
+
+# Show topics information
+source devel/setup.bash 
+rostopic echo /front_single_camera/object_detection
+
 ```
 ---
 # Keys

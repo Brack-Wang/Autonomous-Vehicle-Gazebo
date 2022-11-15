@@ -50,15 +50,15 @@ class ImageConverter:
         # Object Detection with Yolov3 through OpenCV
         detected_list, bbx_frame = yolo_detect_image(rgb_frame)
         print("Detected Objects", detected_list)
-        cv2.imshow("Output", bbx_frame)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.imshow("Output", bbx_frame)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
         middle_lane, img_with_lane_bbxs = lane_detector(rgb_frame, bbx_frame)
         print("middle_lane", middle_lane)
         cv2.imshow("Output", img_with_lane_bbxs)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        cv2.waitKey(1)
+        # cv2.destroyAllWindows()
 
         detectBox = DetectBox()
         for i in range(len(middle_lane)):

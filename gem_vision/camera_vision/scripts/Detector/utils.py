@@ -29,6 +29,7 @@ def process_frame(frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target):
     classIds = []
     confidences = []
     boxes = []
+    bbx_frame = frame
     for out in outs:
         for detection in out:
             scores = detection[5:]

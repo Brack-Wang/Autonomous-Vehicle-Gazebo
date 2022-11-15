@@ -204,19 +204,24 @@ def lane_detector(frame, bbx_frame):
 
     # 4. Hough Transform, generating parallel lanes
     hough_lines =  hough_transform(canny_img=segmented_image ,rho=1, theta=(np.pi/180) * 1, threshold=13, min_line_len=20, max_line_gap=10)
-    seperated_lane = separate_lines(hough_lines, frame)
-    full_lane_image, left_lane, right_lane = trace_both_lane_lines(frame, seperated_lane[0], seperated_lane[1], mask_list)
+    try:
+        seperated_lane = separate_lines(hough_lines, frame)
+        full_lane_image, left_lane, right_lane = trace_both_lane_lines(frame, seperated_lane[0], seperated_lane[1], mask_list)
 
-    # different_color_lane_image = color_lanes(frame, seperated_lane[0], seperated_lane[1])
-    # cv2imshow(different_color_lane_image)
-    # print("left_lane_full: ", left_lane)
-    # print("right_lane_full: ", right_lane)
-    # cv2imshow(full_lane_image)
+        # different_color_lane_image = color_lanes(frame, seperated_lane[0], seperated_lane[1])
+        # cv2imshow(different_color_lane_image)
+        # print("left_lane_full: ", left_lane)
+        # print("right_lane_full: ", right_lane) 
+        # cv2imshow(full_lane_image)
 
-    # 5. Generate middle lane
-    middle_lane = middle_lane_optimize(left_lane, right_lane, seperated_lane)
-    img_with_lane_bbx = draw_lines(bbx_frame, [[middle_lane]])
-    # print("middle_lane", middle_lane)
-    # cv2imshow(img_with_lines)
+        # 5. Generate middle lane
+        middle_lane = middle_lane_optimize(left_lane, right_lane, seperated_lane)
+        img_with_lane_bbx = draw_lines(bbx_frame, [[middle_lane]])
+        # print("middle_lane", middle_lane)
+        # cv2imshow(img_with_lines)
+    except :
+        middle_lane = []
+        img_with_lane_bbx = bbx_frame
+
 
     return middle_lane, img_with_lane_bbx
