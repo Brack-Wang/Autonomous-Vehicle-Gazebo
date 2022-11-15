@@ -21,19 +21,22 @@ catkin build
 ```
 2. **Open Gazebo**
 ```
-source devel/setup.bash  
-
 # 4 gazebo wold
+
 1) World which has pedestrain model for object detection
+source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="mp0.world"  
 
 2) World with waypoints which could use pure pursuit/stanley_sim directly
+source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="track1.world" 
 
 3) World without waypoints
+source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="track2.world" 
 
 4) World for real Car
+source devel/setup.bash  
 roslaunch gem_launch gem_init.launch world_name:="highbay_track.world" x:=-1.5 y:=-21 yaw:=3.1416  
 ```
 
