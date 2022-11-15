@@ -64,7 +64,7 @@ which detect pedestrain and lanes, return bounding box information of detected o
 returns a ros msgs named as "DetectBox" 
 ```from camera_vision.msg import DetectBox```; 
 ```
-Boundingbox_msg: 
+DetectBox_msg: 
 
 float32[] center_x	 #center of Bouding box
 float32[] center_y
