@@ -19,7 +19,9 @@ from cv_bridge import CvBridge, CvBridgeError
 import message_filters
 sys.path.append("./src/gem_vision/camera_vision/scripts/Detector/")
 from yolo_detect_image import yolo_detect_image
-from camera_vision.msg import Boudingbox
+sys.path.append("./src/gem_vision/camera_vision/scripts/lane_detect/")
+from lane_detector import lane_detector
+from camera_vision.msg import DetectBox
 
 class ImageConverter:
     def __init__(self):
@@ -34,7 +36,7 @@ class ImageConverter:
         sync = message_filters.ApproximateTimeSynchronizer([subcriber_rgb, subcriber_left_depth, subcriber_right_depth], 10, 1)
         sync.registerCallback(self.multi_callback)
         # Publish Boudingbox information of objects
-        self.image_pub = rospy.Publisher("/front_single_camera/object_detection", Boudingbox, queue_size=1)
+        self.image_pub = rospy.Publisher("/front_single_camera/object_detection", DetectBox, queue_size=1)
 
     def multi_callback(self, rgb, left_depth, right_depth):
         # Get rgb and depth image in cv2 format respectively
@@ -46,19 +48,30 @@ class ImageConverter:
             rospy.logerr("CvBridge Error: {0}".format(e))
         # ----------------- Imaging processing code starts here ----------------\
         # Object Detection with Yolov3 through OpenCV
-        image_frame = np.copy(rgb_frame)
-        detected_list = yolo_detect_image(image_frame)
+        detected_list, bbx_frame = yolo_detect_image(rgb_frame)
         print("Detected Objects", detected_list)
-        bbx = Boudingbox()
+        cv2.imshow("Output", bbx_frame)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+        middle_lane, img_with_lane_bbxs = lane_detector(rgb_frame, bbx_frame)
+        print("middle_lane", middle_lane)
+        cv2.imshow("Output", img_with_lane_bbxs)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+        detectBox = DetectBox()
+        for i in range(len(middle_lane)):
+            detectBox.middle_lane.append(middle_lane[i])
         for i in  range(len(detected_list)):
-            bbx.center_x.append(detected_list[i][0])
-            bbx.center_y.append(detected_list[i][1])
-            bbx.width.append(detected_list[i][2])
-            bbx.height.append(detected_list[i][3])
-            bbx.classId.append(detected_list[i][4])
-            bbx.confidence.append(detected_list[i][5])
+            detectBox.center_x.append(detected_list[i][0])
+            detectBox.center_y.append(detected_list[i][1])
+            detectBox.width.append(detected_list[i][2])
+            detectBox.height.append(detected_list[i][3])
+            detectBox.classId.append(detected_list[i][4])
+            detectBox.confidence.append(detected_list[i][5])
         # ----------------------------------------------------------------------
-        self.image_pub.publish(bbx)
+        self.image_pub.publish(detectBox)
 
     def cleanup(self):
         print ("Shutting down vision node.")

@@ -15,10 +15,7 @@ def draw_prediction(frame, classes, classId, conf, left, top, right, bottom):
     top = max(top, labelSize[1])
     cv2.rectangle(frame, (left, top - labelSize[1]), (left + labelSize[0], top + baseLine), (255, 255, 255), cv2.FILLED)
     cv2.putText(frame, label, (left, top), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
-    cv2.imshow("Output", frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    # cv2.imwrite(source_path + "output/output_" +  "example.png", image_frame)
+    return frame
 
 # Process frame, eliminating boxes with low confidence scores and applying non-max suppression
 def process_frame(frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target): 
@@ -62,5 +59,5 @@ def process_frame(frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target):
         height = box[3]
         if  classes[classIds[i]] == target:
             detected_list.append([center_x, center_y, width, height, classIds[i], confidence])
-            draw_prediction(frame, classes, classIds[i], confidences[i], left, top, left + width, top + height)
-    return detected_list
+            bbx_frame = draw_prediction(frame, classes, classIds[i], confidences[i], left, top, left + width, top + height)
+    return detected_list, bbx_frame

@@ -7,9 +7,7 @@ def yolo_detect_image(image_frame):
     source_path = "./src/gem_vision/camera_vision/scripts/Detector/"
     # Detect targets, whithin class of COCO dataset
     target = "person"
-    # Define constants
-    # CONF_THRESHOLD is confidence threshold. Only detection with confidence greater than this will be retained
-    # NMS_THRESHOLD is used for non-max suppression
+    # Define constants. CONF_THRESHOLD is confidence threshold. Only detection with confidence greater than this will be retained. NMS_THRESHOLD is used for non-max suppression
     CONF_THRESHOLD = 0.3
     NMS_THRESHOLD = 0.4
     # Create blob from image
@@ -26,5 +24,5 @@ def yolo_detect_image(image_frame):
     # Run forward pass
     outs = net.forward(out_names)
     # Process output and draw predictions
-    detected_list = process_frame(image_frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target)
-    return detected_list
+    detected_list, bbx_frame = process_frame(image_frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target)
+    return detected_list, bbx_frame

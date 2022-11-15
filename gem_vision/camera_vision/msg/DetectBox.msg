@@ -5,3 +5,4 @@ float32[] height
 float32[] distance
 float32[] confidence
 int32[] classId
+float32[] middle_lane
