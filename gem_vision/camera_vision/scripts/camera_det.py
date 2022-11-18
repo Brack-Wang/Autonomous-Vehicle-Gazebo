@@ -37,6 +37,7 @@ class ImageConverter:
         sync.registerCallback(self.multi_callback)
         # Publish Boudingbox information of objects
         self.image_pub = rospy.Publisher("/front_single_camera/object_detection", DetectBox, queue_size=1)
+        self.lane_queue = []
 
     def multi_callback(self, rgb, left_depth, right_depth):
         # Get rgb and depth image in cv2 format respectively
@@ -49,15 +50,18 @@ class ImageConverter:
         # ----------------- Imaging processing code starts here ----------------\
         # Object Detection with Yolov3 through OpenCV
         detected_list, bbx_frame = yolo_detect_image(rgb_frame)
-        print("Detected Objects", detected_list)
+        # print("Detected Objects", detected_list)
         # cv2.imshow("Output", bbx_frame)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
-        middle_lane, img_with_lane_bbxs = lane_detector(rgb_frame, bbx_frame)
-        print("middle_lane", middle_lane)
+        middle_lane, img_with_lane_bbxs, virance_middle = lane_detector(rgb_frame, bbx_frame, self.lane_queue)
+        self.lane_queue = [] 
+        self.lane_queue = [middle_lane, virance_middle]
+        print("self.lane_queue: ", len(self.lane_queue), self.lane_queue)
         cv2.imshow("Output", img_with_lane_bbxs)
         cv2.waitKey(1)
+        # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
         detectBox = DetectBox()
