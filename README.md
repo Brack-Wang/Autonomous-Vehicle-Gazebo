@@ -68,6 +68,7 @@ rostopic echo /front_single_camera/object_detection
 ---
 # Keys
 ## Camera Detection
+1. Message
 which detect pedestrain and lanes, return bounding box information of detected objects and the middle line of lanes
 returns a ros msgs named as "DetectBox" 
 ```from camera_vision.msg import DetectBox```; 
@@ -81,9 +82,11 @@ float32[] height 	 # height of Bouding box
 float32[] distance	 # distance to object
 float32[] confidence # confidence of detecting an object
 int32[] classId	     # clssId = 0 means pedestrain
-float32[] middle_lane # positions of start and end of the middle line of lanes [start_x, start_y, end_x, end_y]
+float32[] middle_lane # positions of points in middle lines [x1, y1, x2, y2, x3, y3...]
 ```
 
+2. Topic
+```/front_single_camera/object_detection```
 
 ---
 
