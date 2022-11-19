@@ -54,8 +54,8 @@ class ImageConverter:
         # cv2.imshow("Output", bbx_frame)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        print("self.last_state_info", self.last_state_info)
-        middle_lane, img_with_lane_bbxs, virance_middle, curren_state_info = lane_detector(rgb_frame, bbx_frame, self.last_state_info)
+        # print("self.last_state_info", self.last_state_info)
+        middle_lane, img_with_lane_bbxs, curren_state_info = lane_detector(rgb_frame, bbx_frame, self.last_state_info)
         self.last_state_info = curren_state_info
         cv2.imshow("Output", img_with_lane_bbxs)
         cv2.waitKey(1)
@@ -63,8 +63,10 @@ class ImageConverter:
         # cv2.destroyAllWindows()
 
         detectBox = DetectBox()
+        print("middle_lane", middle_lane)
         for i in range(len(middle_lane)):
-            detectBox.middle_lane.append(middle_lane[i])
+            detectBox.middle_lane.append(middle_lane[i][0])
+            detectBox.middle_lane.append(middle_lane[i][1])
         for i in  range(len(detected_list)):
             detectBox.center_x.append(detected_list[i][0])
             detectBox.center_y.append(detected_list[i][1])
