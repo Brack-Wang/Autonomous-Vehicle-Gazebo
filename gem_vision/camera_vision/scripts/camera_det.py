@@ -63,7 +63,7 @@ class ImageConverter:
         # cv2.destroyAllWindows()
 
         detectBox = DetectBox()
-        print("middle_lane", middle_lane)
+        # print("middle_lane", middle_lane)
         for i in range(len(middle_lane)):
             detectBox.middle_lane.append(middle_lane[i][0])
             detectBox.middle_lane.append(middle_lane[i][1])
