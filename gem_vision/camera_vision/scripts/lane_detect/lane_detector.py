@@ -138,6 +138,7 @@ def sample_poly_points(current_state, points_number, img, top_y):
     poly = np.poly1d(current_state)
     bottom_y = img.shape[0] - 1
     poly_points = []
+    # Change numbers and position of points we used for cubic curve
     for poly_y in range(int(top_y) + 20, int(bottom_y) - 40, points_number):
         poly_x = poly(poly_y)
         poly_point= (int(poly_x), int(poly_y))
@@ -150,7 +151,7 @@ def UKFKalman(current_state, current_variance, last_state, last_variance):
     last_state = [6 * last_state[0], 2 * last_state[1], last_state[2], last_state[3]]
     # print("current_state", current_state)
     # print("last_state", last_state)
-    kn = last_variance / (last_variance + current_variance) * 0.6
+    kn = last_variance / (last_variance + current_variance) * 0.7
     merge_state = []
     for i in range(len(current_state)):
         merge_state.append(last_state[i] + kn * (current_state[i] - last_state[i]))
@@ -203,7 +204,6 @@ def horizon_transform(detected_lane_image, detected_lane_points, turning_directi
     else:
         generated_first_point = [detected_first_point[0] + 400, detected_first_point[1]]
     generated_points_list.append(generated_first_point)
-
     for i in range(len(detected_lane_points) - 1):
         distance_x = detected_lane_points[i+1][0] - detected_lane_points[i][0]
         distance_y = detected_lane_points[i+1][1] - detected_lane_points[i][1]
@@ -274,6 +274,8 @@ def detect_points(segmented_image, mask_list, img):
         points_detected = [[], []]
     else:
         points_detected = [cluster[0], cluster[1]]
+    # tmp_img = draw_points(img, cluster[1], point_color=[0,0,255])
+    # cv2imshow(tmp_img, "tmp_img")
     return points_detected
 
 # Preprocess the frame and detect left and right lanes' raw points
@@ -293,7 +295,7 @@ def preprocess(frame, low_threshold_list, high_threshold_list, mask_list):
     # cv2imshow(gray_scale_image, "gray_scale_image")
     # cv2imshow(blurred_image,"blurred_image")
     # cv2imshow(canny_image,"canny_image")
-    # cv2imshow(mask,"mask")
+    cv2imshow(mask,"mask")
     # cv2imshow(segmented_image,"segmented_image")
     return points_detected
 
@@ -315,8 +317,8 @@ def lane_detector(frame, bbx_frame, last_state_info):
     top = height * 3 / 5
     left_b = 30 
     right_b = width - 30
-    left_t = left_b + 210
-    right_t = right_b - 210
+    left_t = left_b + 240
+    right_t = right_b - 240
     mask_list = [bottom, top, left_b, right_b, left_t, right_t]
     # Step 5: points number of sampling on cubic curve
     points_number = 5

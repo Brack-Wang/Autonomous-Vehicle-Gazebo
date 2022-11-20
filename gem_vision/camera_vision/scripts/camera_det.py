@@ -58,9 +58,9 @@ class ImageConverter:
         middle_lane, img_with_lane_bbxs, curren_state_info = lane_detector(rgb_frame, bbx_frame, self.last_state_info)
         self.last_state_info = curren_state_info
         cv2.imshow("Output", img_with_lane_bbxs)
-        cv2.waitKey(1)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        # cv2.waitKey(1)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
         detectBox = DetectBox()
         # print("middle_lane", middle_lane)
