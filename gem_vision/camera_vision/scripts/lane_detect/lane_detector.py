@@ -295,7 +295,7 @@ def preprocess(frame, low_threshold_list, high_threshold_list, mask_list):
     # cv2imshow(gray_scale_image, "gray_scale_image")
     # cv2imshow(blurred_image,"blurred_image")
     # cv2imshow(canny_image,"canny_image")
-    cv2imshow(mask,"mask")
+    # cv2imshow(mask,"mask")
     # cv2imshow(segmented_image,"segmented_image")
     return points_detected
 
