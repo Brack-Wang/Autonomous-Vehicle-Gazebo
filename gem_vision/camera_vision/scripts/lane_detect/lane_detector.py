@@ -8,10 +8,13 @@ import cv2
 import math
 from Dbscan import MYDBSCAN, DBSCAN_lib
 
-def cv2imshow(frame, frame_name):
+def cv2imshow(frame, frame_name, mode):
     cv2.imshow(frame_name, frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if mode == 0:
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    elif mode == 1:
+        cv2.waitKey(1)
 
 def draw_lines(img, lines, color, thickness=4, make_copy=True):
     img_copy = np.copy(img) if make_copy else img
@@ -223,8 +226,8 @@ def trace_both_lane_lines(img, points_detected, mask_list, last_state_info, poin
     right_lane_points = points_detected[1]
     left_detected_number = len(points_detected[0])
     right_detected_number = len(points_detected[1])
-    print("left_detected_number ", left_detected_number)
-    print("right_detected_number ", right_detected_number)
+    # print("left_detected_number ", left_detected_number)
+    # print("right_detected_number ", right_detected_number)
     # if left detected lane points is far less than right lane
     if len(left_lane_points) == 0:
         curve_lane_image, right_lane_points, curren_state_right_info= trace_lane_line(img_copy, right_lane_points, region_top_left[1], points_number, last_state_info[1], point_color = [0, 0, 255], make_copy=True)
@@ -290,13 +293,14 @@ def preprocess(frame, low_threshold_list, high_threshold_list, mask_list):
     segmented_image, mask = region_of_interest(canny_image, mask_list)
     points_detected = detect_points(segmented_image, mask_list, frame)
     # 4. Hough Transform, detect lane points
-    # cv2imshow(hsl_image,"hsl_image")
-    # cv2imshow(white_lane, "white_lane")
-    # cv2imshow(gray_scale_image, "gray_scale_image")
-    # cv2imshow(blurred_image,"blurred_image")
-    # cv2imshow(canny_image,"canny_image")
-    # cv2imshow(mask,"mask")
-    # cv2imshow(segmented_image,"segmented_image")
+    # cv2imshow(hsl_image,"hsl_image", 0)
+    NEW_image = np.concatenate([hsl_image, white_lane], axis=1)
+    # cv2imshow(NEW_image, "white_lane", 1)
+    # cv2imshow(gray_scale_image, "gray_scale_image", 0)
+    # cv2imshow(blurred_image,"blurred_image", 0)
+    # cv2imshow(canny_image,"canny_image", 0)
+    # cv2imshow(mask,"mask", 0)
+    # cv2imshow(segmented_image,"segmented_image", 1)
     return points_detected
 
 def lane_detector(frame, bbx_frame, last_state_info): 
@@ -311,14 +315,14 @@ def lane_detector(frame, bbx_frame, last_state_info):
     # Lower value equivalent pure HSL is [30, 45, 15]  / [0, 200, 0] /  
     # Higher value equivalent pure HSL is [360, 100, 100]  / [180, 255, 255] / 
     low_threshold_list =[0, 200, 0] 
-    high_threshold_list = [180, 255, 255]
+    high_threshold_list = [181, 255, 255]
     # Step 3: 4 points position of Mask 
     bottom = height - 1
     top = height * 3 / 5
-    left_b = 30 
-    right_b = width - 30
-    left_t = left_b + 240
-    right_t = right_b - 240
+    left_b = 150 
+    right_b = width - 150
+    left_t = left_b + 400
+    right_t = right_b - 400
     mask_list = [bottom, top, left_b, right_b, left_t, right_t]
     # Step 5: points number of sampling on cubic curve
     points_number = 5
@@ -330,13 +334,13 @@ def lane_detector(frame, bbx_frame, last_state_info):
     # try:
     left_detected_points = draw_points(bbx_frame, points_detected[0], point_color=[233,134,0])
     right_detected_points = draw_points(left_detected_points, points_detected[1], point_color=[0,134,233])
-    # cv2imshow(different_color_lane_image, "different_color_lane_image")
+    # cv2imshow(right_detected_points, "right_detected_points", 0)
 
     full_lane_image, left_lane, right_lane, current_state_info = trace_both_lane_lines(right_detected_points, points_detected, mask_list, last_state_info, points_number)
 
     # print("left_lane_full: ", len(left_lane))
     # print("right_lane_full: ", len(right_lane)) 
-    # cv2imshow(full_lane_image, "full_lane_image")
+    # cv2imshow(full_lane_image, "full_lane_image", 1)
 
     # 6. Generate middle lane
     middle_points = middle_lane_generator(left_lane, right_lane, current_state_info)
