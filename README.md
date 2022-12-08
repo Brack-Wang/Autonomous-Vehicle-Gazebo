@@ -12,11 +12,12 @@
 	- Put the weight file in ./Store
 7. Download Rosbag to publish essential real topics:
 
-Use rosbag to run it when using camera_det.py
-
 Lane Detect: https://drive.google.com/file/d/1uh7e4kP_bxRsgM3ZGiiM5_wImATIF3oE/view?usp=share_link
 
 Object Detect: https://drive.google.com/file/d/1jU4KOYWxC1Cf9K1SX1XIh1JPtUfYRkm8/view?usp=share_link
+
+Use rosbag to run it when using camera_det.py
+
 ---
 # Simulator Command cheat sheet
 1. **Compile**
