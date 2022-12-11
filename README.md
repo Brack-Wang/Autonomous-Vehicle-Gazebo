@@ -87,7 +87,9 @@ float32[] object_x		# Horizontal coordinate of object
 float32[] object_y	     # verticle coordinate of object
 float32[] classId 	 # Id of person is "0"
 float32[] confidence # confidence of detecting an object
-float32[] middle_lane # positions of points in middle lines [x1, y1, distance1, x2, y2, distance2, x3, y3, distance3...]
+float32[] middle_x # positions of points in middle lines [x1, y1, distance1, x2, y2, distance2, x3, y3, distance3...]
+float32[] middle_y
+float32[] signal  # signal: 0: straigt; 1: turn left; 2: turn right
 ```
 
 2. Topic
