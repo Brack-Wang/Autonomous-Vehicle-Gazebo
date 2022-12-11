@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 import argparse
-from utils import process_frame, draw_prediction
+from utils import *
 
-def yolo_detect_image(image_frame):
-    source_path = "./src/gem_vision/camera_vision/scripts/Detector/"
+def yolo_detect_image(image_frame, souce_path):
+    source_path = souce_path + "Detector/"
     # Detect targets, whithin class of COCO dataset
     target = "person"
     # Define constants. CONF_THRESHOLD is confidence threshold. Only detection with confidence greater than this will be retained. NMS_THRESHOLD is used for non-max suppression
@@ -16,7 +16,7 @@ def yolo_detect_image(image_frame):
     with open(source_path + 'coco.txt', 'rt') as f:
         classes = f.read().rstrip('\n').split('\n')
     # Load the network with YOLOv3 weights and config using darknet framework
-    net = cv2.dnn.readNet("./Store/yolov3.weights", source_path + "yolov3.cfg", "darknet")
+    net = cv2.dnn.readNet(source_path + "yolov3.weights", source_path + "yolov3.cfg", "darknet")
     # Get the output layer names used for forward pass
     out_names = net.getUnconnectedOutLayersNames()
     # Set the input

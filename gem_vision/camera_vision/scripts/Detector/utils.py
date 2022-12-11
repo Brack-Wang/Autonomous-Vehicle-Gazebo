@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import argparse
 
 # Draw a prediction box with confidence and title
 def draw_prediction(frame, classes, classId, conf, left, top, right, bottom):

@@ -3,4 +3,6 @@ float32[] object_x
 float32[] object_y
 int32[] classId
 float32[] confidence
-float32[] middle_lane
+float32[] middle_x
+float32[] middle_y
+float32[] signal
