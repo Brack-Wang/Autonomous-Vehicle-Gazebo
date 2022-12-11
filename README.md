@@ -9,7 +9,7 @@
 5. Change name of folder "Autonomous-Vehicle-Gazebo" to "src"
 6. Install yolov3.weight for object detection
 	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
-	- Put the weight file in ./Store
+	- Put the weight file in ./gem_vision/camera_vision/scripts/Detector
 7. Download Rosbag to publish essential real topics:
 
 Lane Detect: https://drive.google.com/file/d/1uh7e4kP_bxRsgM3ZGiiM5_wImATIF3oE/view?usp=share_link
