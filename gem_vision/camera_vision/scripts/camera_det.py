@@ -1,27 +1,17 @@
 #! /usr/bin/env python
 from __future__ import print_function
-
 import sys
-import copy
-import time
-import rospy
-import rospkg
-
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-
-from std_msgs.msg import String, Float64
-from geometry_msgs.msg import Point
-from sensor_msgs.msg import Image, CameraInfo, CompressedImage
-from cv_bridge import CvBridge, CvBridgeError
-import message_filters
-sys.path.append("./src/gem_vision/camera_vision/scripts/Detector/")
+souce_path = "./src/gem_vision/camera_vision/scripts/"
+# souce_path = "./src/vehicle_drivers/gem_vision/gem_vision/camera_vision/scripts/"
+sys.path.append(souce_path)
+from camera_utils import *
+sys.path.append(souce_path + "Detector/")
 from yolo_detect_image import yolo_detect_image
-sys.path.append("./src/gem_vision/camera_vision/scripts/lane_detect/")
+sys.path.append(souce_path + "lane_detect/")
 from lane_detector import lane_detector
-from camera_vision.msg import DetectBox
+
+object_detection = True
+lane_detection = True
 
 class ImageConverter:
     def __init__(self):
@@ -29,49 +19,49 @@ class ImageConverter:
         rospy.init_node(self.node_name)
         rospy.on_shutdown(self.cleanup)
         self.bridge = CvBridge()
+        self.last_state_info = [[], []]
+        self.last_ssim_info = [deque(), deque()]
+        self.frame_counter = 0
         # Subscribe camera rgb and depth information
-        subcriber_rgb = message_filters.Subscriber('/front_single_camera/image_raw', Image)
-        subcriber_left_depth = message_filters.Subscriber('/stereo/camera/left/image_raw', Image)
-        subcriber_right_depth = message_filters.Subscriber('/stereo/camera/left/image_raw', Image)
-        sync = message_filters.ApproximateTimeSynchronizer([subcriber_rgb, subcriber_left_depth, subcriber_right_depth], 10, 1)
+        depth_img_topic = rospy.get_param('depth_info_topic','/zed2/zed_node/depth/depth_registered')
+        self.depth_img_sub = message_filters.Subscriber(depth_img_topic,Image)
+        self.subcriber_rgb = message_filters.Subscriber('/zed2/zed_node/rgb/image_rect_color', Image)
+        self.subcriber_rgb_camera = message_filters.Subscriber('/zed2/zed_node/rgb_raw/camera_info', CameraInfo)
+        sync = message_filters.ApproximateTimeSynchronizer([self.subcriber_rgb, self.depth_img_sub, self.subcriber_rgb_camera], 10, 1)
         sync.registerCallback(self.multi_callback)
         # Publish Boudingbox information of objects
-        self.image_pub = rospy.Publisher("/front_single_camera/object_detection", DetectBox, queue_size=1)
+        self.image_pub = rospy.Publisher("/object_detection", Detected_msg, queue_size=1)
+        self.image_pub_rviz = rospy.Publisher("/object_detection_person", Image, queue_size=1)
 
-    def multi_callback(self, rgb, left_depth, right_depth):
-        # Get rgb and depth image in cv2 format respectively
+    def multi_callback(self, rgb, depth, camera_info):
         try:
             rgb_frame = self.bridge.imgmsg_to_cv2(rgb, "bgr8")
-            left_depth_frame = self.bridge.imgmsg_to_cv2(left_depth, "bgr8")
-            right_depth_frame = self.bridge.imgmsg_to_cv2(right_depth, "bgr8")
+            depth_frame = self.bridge.imgmsg_to_cv2(depth, "32FC1")
         except CvBridgeError as e:
             rospy.logerr("CvBridge Error: {0}".format(e))
+        out_frame = rgb_frame
+        detectBox = Detected_msg()
         # ----------------- Imaging processing code starts here ----------------\
-        # Object Detection with Yolov3 through OpenCV
-        detected_list, bbx_frame = yolo_detect_image(rgb_frame)
-        print("Detected Objects", detected_list)
-        # cv2.imshow("Output", bbx_frame)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        # # Object Detection
+        if object_detection == True:
+            detected_list, out_frame = yolo_detect_image(out_frame, souce_path)
+            object_camera_coordinate_list, out_frame = calculate_object_distance(detected_list, depth_frame, camera_info, out_frame)
+        # Add information you want to publish
 
-        middle_lane, img_with_lane_bbxs = lane_detector(rgb_frame, bbx_frame)
-        print("middle_lane", middle_lane)
-        cv2.imshow("Output", img_with_lane_bbxs)
-        cv2.waitKey(1)
-        # cv2.destroyAllWindows()
+        # Lane Detection 
+        if lane_detection == True:
+            self.frame_counter = self.frame_counter + 1
+            middle_point, out_frame, curren_state_info, current_ssim_info, signal, angle, segmented_image= lane_detector(out_frame, self.last_state_info, self.last_ssim_info, self.frame_counter, souce_path)
+            self.last_state_info = curren_state_info
+            self.current_ssim_info = current_ssim_info
+            lane_camera_coordinate_list, bbx_frame  = calculate_lane_distance(middle_point, depth_frame, camera_info, out_frame)
+        # Add information you want to publish
 
-        detectBox = DetectBox()
-        for i in range(len(middle_lane)):
-            detectBox.middle_lane.append(middle_lane[i])
-        for i in  range(len(detected_list)):
-            detectBox.center_x.append(detected_list[i][0])
-            detectBox.center_y.append(detected_list[i][1])
-            detectBox.width.append(detected_list[i][2])
-            detectBox.height.append(detected_list[i][3])
-            detectBox.classId.append(detected_list[i][4])
-            detectBox.confidence.append(detected_list[i][5])
+        cv2imshow(self, out_frame, "out_frame", 1)
         # ----------------------------------------------------------------------
         self.image_pub.publish(detectBox)
+        cv_img = CvBridge().cv2_to_imgmsg(out_frame, "bgr8")
+        self.image_pub_rviz.publish(cv_img)
 
     def cleanup(self):
         print ("Shutting down vision node.")

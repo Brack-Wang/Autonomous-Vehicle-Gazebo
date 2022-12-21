@@ -9,7 +9,14 @@
 5. Change name of folder "Autonomous-Vehicle-Gazebo" to "src"
 6. Install yolov3.weight for object detection
 	- install yolov3.weight from https://pjreddie.com/media/files/yolov3.weights
-	- Put the weight file in ./Store
+	- Put the weight file in ./gem_vision/camera_vision/scripts/Detector
+7. Download Rosbag to publish essential real topics:
+
+Lane Detect: https://drive.google.com/file/d/1uh7e4kP_bxRsgM3ZGiiM5_wImATIF3oE/view?usp=share_link
+
+Object Detect: https://drive.google.com/file/d/1jU4KOYWxC1Cf9K1SX1XIh1JPtUfYRkm8/view?usp=share_link
+
+Use rosbag to run it when using camera_det.py
 
 ---
 # Simulator Command cheat sheet
@@ -68,22 +75,25 @@ rostopic echo /front_single_camera/object_detection
 ---
 # Keys
 ## Camera Detection
+1. Message
 which detect pedestrain and lanes, return bounding box information of detected objects and the middle line of lanes
-returns a ros msgs named as "DetectBox" 
-```from camera_vision.msg import DetectBox```; 
+returns a ros msgs named as "Detected_info" 
+```from camera_vision.msg import Detected_info```; 
 ```
 DetectBox_msg: 
 
-float32[] center_x	 #center of Bouding box
-float32[] center_y
-float32[] width	     # width of Bounding box
-float32[] height 	 # height of Bouding box
-float32[] distance	 # distance to object
+float32[] object_distance	 #distance of object from car
+float32[] object_x		# Horizontal coordinate of object
+float32[] object_y	     # verticle coordinate of object
+float32[] classId 	 # Id of person is "0"
 float32[] confidence # confidence of detecting an object
-int32[] classId	     # clssId = 0 means pedestrain
-float32[] middle_lane # positions of start and end of the middle line of lanes [start_x, start_y, end_x, end_y]
+float32[] middle_x # positions of points in middle lines [x1, y1, distance1, x2, y2, distance2, x3, y3, distance3...]
+float32[] middle_y
+float32[] signal  # signal: 0: straigt; 1: turn left; 2: turn right
 ```
 
+2. Topic
+```/object_detection```
 
 ---
 
