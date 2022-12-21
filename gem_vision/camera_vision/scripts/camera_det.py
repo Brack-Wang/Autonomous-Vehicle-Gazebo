@@ -2,6 +2,7 @@
 from __future__ import print_function
 import sys
 souce_path = "./src/gem_vision/camera_vision/scripts/"
+# souce_path = "./src/vehicle_drivers/gem_vision/gem_vision/camera_vision/scripts/"
 sys.path.append(souce_path)
 from camera_utils import *
 sys.path.append(souce_path + "Detector/")
@@ -11,7 +12,6 @@ from lane_detector import lane_detector
 
 object_detection = True
 lane_detection = True
-
 
 class ImageConverter:
     def __init__(self):
@@ -30,7 +30,8 @@ class ImageConverter:
         sync = message_filters.ApproximateTimeSynchronizer([self.subcriber_rgb, self.depth_img_sub, self.subcriber_rgb_camera], 10, 1)
         sync.registerCallback(self.multi_callback)
         # Publish Boudingbox information of objects
-        self.image_pub = rospy.Publisher("/object_detection", Detected_info, queue_size=1)
+        self.image_pub = rospy.Publisher("/object_detection", Detected_msg, queue_size=1)
+        self.image_pub_rviz = rospy.Publisher("/object_detection_person", Image, queue_size=1)
 
     def multi_callback(self, rgb, depth, camera_info):
         try:
@@ -39,38 +40,28 @@ class ImageConverter:
         except CvBridgeError as e:
             rospy.logerr("CvBridge Error: {0}".format(e))
         out_frame = rgb_frame
-        detectBox = Detected_info()
+        detectBox = Detected_msg()
         # ----------------- Imaging processing code starts here ----------------\
-        # Object Detection
+        # # Object Detection
         if object_detection == True:
             detected_list, out_frame = yolo_detect_image(out_frame, souce_path)
             object_camera_coordinate_list, out_frame = calculate_object_distance(detected_list, depth_frame, camera_info, out_frame)
-            for i in  range(len(detected_list)):
-                detectBox.object_distance.append(object_camera_coordinate_list[i][0])
-                detectBox.object_x.append(object_camera_coordinate_list[i][1])
-                detectBox.object_y.append(object_camera_coordinate_list[i][2])
-                detectBox.classId.append(object_camera_coordinate_list[i][3])
-                detectBox.confidence.append(object_camera_coordinate_list[i][4])
+        # Add information you want to publish
 
         # Lane Detection 
         if lane_detection == True:
             self.frame_counter = self.frame_counter + 1
-            middle_point, out_frame, curren_state_info, current_ssim_info, signal= lane_detector(out_frame, self.last_state_info, self.last_ssim_info, self.frame_counter, souce_path)
+            middle_point, out_frame, curren_state_info, current_ssim_info, signal, angle, segmented_image= lane_detector(out_frame, self.last_state_info, self.last_ssim_info, self.frame_counter, souce_path)
             self.last_state_info = curren_state_info
             self.current_ssim_info = current_ssim_info
-            # lane_camera_coordinate_list, bbx_frame  = self.calculate_lane_distance(middle_lane, depth_frame, camera_info, bbx_frame)
-            # self.cv2imshow(bbx_frame, "bbx_frame", 1)
-            if len(middle_point) > 0:
-                detectBox.middle_x.append(middle_point[0][0])
-                detectBox.middle_y.append(middle_point[0][1])
-            else:
-                detectBox.middle_x.append(-1)
-                detectBox.middle_y.append(-1)
-            detectBox.signal.append(signal)
+            lane_camera_coordinate_list, bbx_frame  = calculate_lane_distance(middle_point, depth_frame, camera_info, out_frame)
+        # Add information you want to publish
 
         cv2imshow(self, out_frame, "out_frame", 1)
         # ----------------------------------------------------------------------
         self.image_pub.publish(detectBox)
+        cv_img = CvBridge().cv2_to_imgmsg(out_frame, "bgr8")
+        self.image_pub_rviz.publish(cv_img)
 
     def cleanup(self):
         print ("Shutting down vision node.")

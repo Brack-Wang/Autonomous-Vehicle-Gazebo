@@ -6,7 +6,7 @@ from utils import *
 def yolo_detect_image(image_frame, souce_path):
     source_path = souce_path + "Detector/"
     # Detect targets, whithin class of COCO dataset
-    target = "person"
+    target = "car"
     # Define constants. CONF_THRESHOLD is confidence threshold. Only detection with confidence greater than this will be retained. NMS_THRESHOLD is used for non-max suppression
     CONF_THRESHOLD = 0.3
     NMS_THRESHOLD = 0.4

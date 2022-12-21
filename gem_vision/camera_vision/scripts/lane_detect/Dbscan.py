@@ -1,4 +1,5 @@
 from lane_utils import *
+from sklearn.cluster import DBSCAN
 
 def DBSCAN_lib(width, D, eps = 20, MinPts = 4):
     data = np.array(D)

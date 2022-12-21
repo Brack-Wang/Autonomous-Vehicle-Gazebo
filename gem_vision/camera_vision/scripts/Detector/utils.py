@@ -59,7 +59,7 @@ def process_frame(frame, outs, classes, CONF_THRESHOLD, NMS_THRESHOLD, target):
         top = box[1]
         width = box[2]
         height = box[3]
-        # if  classes[classIds[i]] == target:
-        detected_list.append([left, top, left + width, top + height, classIds[i], confidence])
-        bbx_frame = draw_prediction(frame, classes, classIds[i], confidences[i], left, top, left + width, top + height)
+        if  classes[classIds[i]] == target:
+            detected_list.append([left, top, left + width, top + height, classIds[i], confidence])
+            bbx_frame = draw_prediction(frame, classes, classIds[i], confidences[i], left, top, left + width, top + height)
     return detected_list, bbx_frame

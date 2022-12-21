@@ -24,7 +24,7 @@ sys.path.append("./src/gem_vision/camera_vision/scripts/lane_detect/")
 from lane_detector import lane_detector
 from camera_vision.msg import Detected_info
 
-
+# Use this code to save sub video of rosbag you want
 class ImageConverter:
     def __init__(self):
         self.node_name = "gem_vision"

@@ -95,12 +95,6 @@ def straight_lane_detector(frame, mask_list, threshold):
     segmented_image, mask = region_of_interest(canny_image, mask_list)
     # 4. Hough Transform, generating parallel lanes
     hough_lines =  hough_transform(canny_img=segmented_image ,rho=1, theta=(np.pi/180) * 1, threshold=13, min_line_len=20, max_line_gap=10)
-    # cv2imshow(NEW_image, "white_lane", 1)
-    # cv2imshow(gray_scale_image, "gray_scale_image", 0)
-    # cv2imshow(blurred_image,"blurred_image", 0)
-    # cv2imshow(canny_image,"canny_image", 0)
-    # cv2imshow(mask,"mask", 0)
-    # cv2imshow(segmented_image,"segmented_image", 1)
     try:
         # 4. Detect left and right lanes
         seperated_lane = separate_lines(hough_lines, frame)
@@ -108,15 +102,6 @@ def straight_lane_detector(frame, mask_list, threshold):
         # 6. Generate middle lane
         middle_point, A = middle_lane_optimize(left_lane, right_lane, seperated_lane, full_lane_image, mask_list)
         img_with_lane_bbx = draw_points(full_lane_image, middle_point, [255, 0, 255])
-        # different_color_lane_image = color_lanes(frame, seperated_lane[0], seperated_lane[1])
-        # cv2imshow(different_color_lane_image)
-        # print("left_lane_full: ", left_lane)
-        # print("right_lane_full: ", right_lane) 
-        # cv2imshow(full_lane_image, "full_lane_image", 0)
-        # print(middle_points)
-        # print("middle_lane", middle_lane)
-        # cv2imshow(img_with_lane_bbx, "img_with_lane_bbx", 0)
-        # print("A ", A)
     except :
         middle_point = []
         img_with_lane_bbx = frame

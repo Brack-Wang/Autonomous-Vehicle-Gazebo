@@ -6,6 +6,7 @@ def preprocess(frame, threshold):
     blurred_image = cv2.GaussianBlur(gray_scale_image, (5, 5), 0) 
     return blurred_image
 
+# Use SSIM to determine the similarity of two image
 def img_compare(frame, threshold, last_ssim_info, frame_counter, souce_path):
         ssim_dict = dict()
         ssim_dict = {"1": 0, "1c": 0, "2": 0,"2c": 0}

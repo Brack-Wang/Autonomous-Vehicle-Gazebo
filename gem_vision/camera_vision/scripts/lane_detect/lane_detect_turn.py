@@ -68,23 +68,18 @@ def sample_poly_points(current_state, points_number, img, top_y):
 def UKFKalman(current_state, current_variance, last_state, last_variance):
     current_state = [6 * current_state[0], 2 * current_state[1], current_state[2], current_state[3]]
     last_state = [6 * last_state[0], 2 * last_state[1], last_state[2], last_state[3]]
-    # print("current_state", current_state)
-    # print("last_state", last_state)
     kn = last_variance / (last_variance + current_variance) * 0.7
     merge_state = []
     for i in range(len(current_state)):
         merge_state.append(last_state[i] + kn * (current_state[i] - last_state[i]))
-    # print("merge_state", merge_state)
     variance = (1 - kn) * last_variance
     state = [1 / 6 * merge_state[0], 1 / 2 * merge_state[1], merge_state[2], merge_state[3]]
-    # print("state:", state)
     return state, variance
 
 # Cubic Curve Fitting
 def fit_cubic_curve(points, points_number, img, top_y, last_state_info):
     xs = []
     ys = []
-    # print("lines", lines)
     for point in points:
         xs.append(point[0])
         ys.append(point[1])
@@ -93,17 +88,15 @@ def fit_cubic_curve(points, points_number, img, top_y, last_state_info):
     # Calculate variance of current state
     poly_points = sample_poly_points(current_state, points_number, img, top_y)
     current_variance = calculate_covirance(points, poly_points)
-    # print("last_state_info", last_state_info)
     if len(last_state_info) == 0:
         state = current_state
         variance = current_variance
     else:
         # Insert Kalman Filter here
-        # print("last_state_info", last_state_info)
         last_state = last_state_info[0]
         last_variance = last_state_info[1]
         state, variance = UKFKalman(current_state, current_variance, last_state, last_variance)
-    return current_state, current_variance
+    return state, variance
 
 # Cubic Curve interpolation
 def trace_lane_line(img, points_detected, top_y, points_number, last_state_info, point_color, make_copy=True):
@@ -115,6 +108,7 @@ def trace_lane_line(img, points_detected, top_y, points_number, last_state_info,
     # print("poly_points", poly_points)
     return draw_points(img, poly_points, point_color, make_copy=make_copy), poly_points, current_state
 
+# If one of lanes is not detected, make horizon shift to generate one
 def horizon_transform(detected_lane_image, detected_lane_points, turning_direction, point_color, make_copy=True):
     generated_points_list = []
     detected_first_point =  detected_lane_points[0]
@@ -128,8 +122,6 @@ def horizon_transform(detected_lane_image, detected_lane_points, turning_directi
         distance_y = detected_lane_points[i+1][1] - detected_lane_points[i][1]
         left_point = [generated_points_list[i][0] + distance_x, generated_points_list[i][1] + distance_y]
         generated_points_list.append(left_point)
-    # print("\nright_lane_points", detected_lane_points,"\nleft_lane_points", generated_points_list)
-    # return draw_points(right_right_curve_lane_image, poly_points, point_color, make_copy=True)
     current_state = []
     return draw_points(detected_lane_image, generated_points_list, point_color, make_copy=make_copy), generated_points_list, current_state
 
@@ -142,8 +134,6 @@ def trace_both_lane_lines(img, points_detected, mask_list, last_state_info, poin
     right_lane_points = points_detected[1]
     left_detected_number = len(points_detected[0])
     right_detected_number = len(points_detected[1])
-    # print("left_detected_number ", left_detected_number)
-    # print("right_detected_number ", right_detected_number)
     # if left detected lane points is far less than right lane
     if len(left_lane_points) == 0:
         curve_lane_image, right_lane_points, curren_state_right_info= trace_lane_line(img_copy, right_lane_points, region_top_left[1], points_number, last_state_info[1], point_color = [0, 0, 255], make_copy=True)
@@ -163,13 +153,11 @@ def trace_both_lane_lines(img, points_detected, mask_list, last_state_info, poin
         merged_lane_image, right_lane_points, curren_state_right_info= trace_lane_line(curve_lane_image, right_lane_points, region_top_left[1], points_number, last_state_info[1], point_color = [0, 0, 255], make_copy=True)
     # Update Current state info [state, variance] for left and right lanes
     current_state_info = [curren_state_left_info, curren_state_right_info]
-    # print("current_state_info", current_state_info)
     return merged_lane_image, left_lane_points, right_lane_points, current_state_info
 
 # Generate middle lane by avarage left and right lanes
 def middle_lane_generator(left_lane, right_lane, current_state_info):
     middle_points = []
-    # left_variance = current_s
     for i in range(len(left_lane)):
         middle_point_x = (left_lane[i][0] + right_lane[i][0]) / 2
         middle_point_y = (left_lane[i][1] + right_lane[i][1]) / 2
@@ -194,8 +182,6 @@ def detect_points(segmented_image, mask_list, img):
         points_detected = [[], []]
     else:
         points_detected = [cluster[0], cluster[1]]
-    # tmp_img = draw_points(img, cluster[1], point_color=[0,0,255])
-    # cv2imshow(tmp_img, "tmp_img")
     return points_detected
 
 # Preprocess the frame and detect left and right lanes' raw points
@@ -210,48 +196,24 @@ def preprocess(frame, low_threshold_list, high_threshold_list, mask_list):
     segmented_image, mask = region_of_interest(canny_image, mask_list)
     points_detected = detect_points(segmented_image, mask_list, frame)
     # 4. Hough Transform, detect lane points
-    # cv2imshow(hsl_image,"hsl_image", 0)
-    # NEW_image = np.concatenate([white_lane], axis=1)
-    # cv2imshow(white_lane, "white_lane", 1)
-    # cv2imshow(gray_scale_image, "gray_scale_image", 0)
-    # cv2imshow(blurred_image,"blurred_image", 0)
-    # cv2imshow(canny_image,"canny_image", 0)
-    # cv2imshow(mask,"mask", 1)
-    # cv2imshow(segmented_image,"segmented_image", 1)
-    return points_detected
+    return points_detected, segmented_image
 
 def turing_lane_detector(frame, last_state_info, mask_list, threshold): 
     # Step 5: points number of sampling on cubic curve
     points_number = 5
-
     #1. Preprocess the frame
-    points_detected = preprocess(frame, threshold[0], threshold[1], mask_list)
-    # print("points_detected:", points_detected)
+    points_detected, segmented_image= preprocess(frame, threshold[0], threshold[1], mask_list)
     # 5. Generate left and right lanes
     # try:
     left_detected_points = draw_points(frame, points_detected[0], point_color=[233,134,0])
     right_detected_points = draw_points(left_detected_points, points_detected[1], point_color=[0,134,233])
-    # cv2imshow(right_detected_points, "right_detected_points", 1)
-
     full_lane_image, left_lane, right_lane, current_state_info = trace_both_lane_lines(right_detected_points, points_detected, mask_list, last_state_info, points_number)
-
-    # print("left_lane_full: ", len(left_lane))
-    # print("right_lane_full: ", len(right_lane)) 
-    NEW_image = np.concatenate([right_detected_points, full_lane_image], axis=1)
-
-    # cv2imshow(NEW_image, "NEW_image2", 1)s
-
     # 6. Generate middle lane
     middle_points = middle_lane_generator(left_lane, right_lane, current_state_info)
     img_with_lane_bbx = draw_points(full_lane_image, middle_points, point_color=[0, 255, 0])
-    # img_with_lane_bbx = draw_lines(bbx_frame, [[middle_lane]])
-
-    # print("middle_lane", middle_lane)
-    # cv2imshow(img_with_lines)
     # except :
     #     middle_points = []
     #     img_with_lane_bbx = bbx_frame
     #     current_state_info = [[], []]
     #     print("None Detected")
-
-    return middle_points, img_with_lane_bbx, current_state_info
+    return middle_points, img_with_lane_bbx, current_state_info, segmented_image
