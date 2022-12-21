@@ -12,11 +12,9 @@
 	- Put the weight file in ./gem_vision/camera_vision/scripts/Detector
 7. Download Rosbag to publish essential real topics:
 
-Lane Detect: https://drive.google.com/file/d/1uh7e4kP_bxRsgM3ZGiiM5_wImATIF3oE/view?usp=share_link
-
-Object Detect: https://drive.google.com/file/d/1jU4KOYWxC1Cf9K1SX1XIh1JPtUfYRkm8/view?usp=share_link
-
 Use rosbag to run it when using camera_det.py
+
+8. Run the code on simulator as instructions. But you need to change topics you want subscribe in camera_det.py
 
 ---
 # Simulator Command cheat sheet
@@ -87,13 +85,15 @@ float32[] object_x		# Horizontal coordinate of object
 float32[] object_y	     # verticle coordinate of object
 float32[] classId 	 # Id of person is "0"
 float32[] confidence # confidence of detecting an object
-float32[] middle_x # positions of points in middle lines [x1, y1, distance1, x2, y2, distance2, x3, y3, distance3...]
-float32[] middle_y
-float32[] signal  # signal: 0: straigt; 1: turn left; 2: turn right
+float32 middle_x # positions of points in middle lines [x1, y1, distance1, x2, y2, distance2, x3, y3, distance3...]
+float32 middle_y
+float32 signal  # signal: 0: straigt; 1: turn left; 2: turn right
+float32 angle
 ```
 
 2. Topic
 ```/object_detection```
+```/object_detection_pedestrain``` The visialization of the detected image.
 
 ---
 
