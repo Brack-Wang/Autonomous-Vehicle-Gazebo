@@ -8,7 +8,7 @@ https://youtu.be/h6O3qAGtVFc
 
 2. Project 2: Lane detector
 
-https://youtu.be/h6O3qAGtVFc
+https://youtu.be/hXn8bDd7wPk
 
 https://youtu.be/4RBllkrjGfQ
 
