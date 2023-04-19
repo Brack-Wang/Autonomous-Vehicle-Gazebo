@@ -2,32 +2,36 @@
 
 The implementation project has been uploaded as videos.
 
-1. Project 1: Comparison of three controller methods
-
-https://youtu.be/h6O3qAGtVFc
-
-2. Project 2: Lane detector
+1. Project 1: Lane detector
 
 https://youtu.be/hXn8bDd7wPk
 
 https://youtu.be/4RBllkrjGfQ
 
-3. Break when detecting pedestrian
+2. Break when detecting pedestrian
 
 https://youtu.be/6yVuaIZGe-Q
 
-4. Follow waypoints through GPS
-
-https://youtu.be/6yVuaIZGe-Q
-
-5. SLAM and odometer
+3. SLAM and odometer
 
 https://youtu.be/rs1c_et1WI4
 
-6. Control the flash of the AV
+4. Control the flash of the AV
 
 https://youtube.com/shorts/eqTLvftsYI4?feature=share
 
+5. Project 2: Comparison of three controller methods
+
+https://youtu.be/h6O3qAGtVFc
+
+6. Follow waypoints through GPS
+
+https://youtu.be/6yVuaIZGe-Q
+
+7. PID in simulation:
+https://youtu.be/oPxue8Mdhb4
+
+https://www.youtube.com/watch?v=c0jREJDEeZw&list=PLxkYps1mnnVT1FGz7c_hLw5uxoE46Uv4g&index=5
 
 
 ---
